@@ -1,29 +1,26 @@
 export class NotCommandException extends Error {
   description;
 
-  constructor(msg, description){
+  constructor() {
       super();
-      this.message = msg;
-      this.description = description;
+      this.message = 'Command is empty';
   }
 }
 
 export class NotInstructionException extends Error {
   description;
 
-  constructor(msg, description){
+  constructor() {
       super();
-      this.message = msg;
-      this.description = description;
+      this.message = 'Instruction is empty'
   }
 }
 
 export class InvalidCommandException extends Error {
   description;
 
-  constructor(msg, description){
+  constructor(command) {
       super();
-      this.message = msg;
-      this.description = description;
+      this.message = `Command ${command} is invalid`;
   }
 }

@@ -1,28 +1,32 @@
 import { NotInstructionException, NotCommandException, InvalidCommandException } from './utils/exceptions';
 import { VALID_COMMANDS } from './utils/constants';
+import logger from './utils/logger.js';
 
 class InstructionHandler {
   processInstructions(instructions) {
     for (const instruction of instructions) {
-      this._processInstruction(instruction);
+      try {
+        this._processInstruction(instruction);
+      } catch (error) {
+        logger.error(error);
+      }
     }
   }
 
   _processInstruction(instruction) {
-    if (!instruction || !instruction.length) throw NotInstructionException();
-    this._getCommand(instruction);
+    if (!instruction || !instruction.length) throw new NotInstructionException();
+    const command = this._getCommand(instruction);
+    this._validateCommand(command);
   }
 
   _getCommand(instruction) {
     const command = instruction.split(/\s+/)[0];
-    if (!command || !command.length) throw NotCommandException();
-    if (isNotValidCommand(command)) throw InvalidCommandException(command)
-    return command
+    return command;
   }
 
-  _isNotValidCommand(command) {
-    if (VALID_COMMANDS.includes(command.toUpperCase().trim())) return false;
-    return true;
+  _validateCommand(command) {
+    if (!command || !command.length) throw new NotCommandException();
+    if (!VALID_COMMANDS.includes(command.toUpperCase().trim())) throw new InvalidCommandException(command);
   }
 
   _executeCommand(command, directoryTree) {

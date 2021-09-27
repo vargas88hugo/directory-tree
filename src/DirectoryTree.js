@@ -1,33 +1,25 @@
 import { NotCommandException } from './utils/exceptions';
 
 class DirectoryTree {
-  processInstructions(instructions) {
-    for (const instruction of instructions) {
-      this._processInstruction(instruction);
-    }
+  directoryTree = new Map();
+
+  create(directory) {
+    this.directoryTree.add(directory);
   }
 
-  _processInstruction(instruction) {
-    if (!instruction.length) throw NotCommandException();
+  move(directory, path) {
+
+  }
+
+  delete(directory) {
     
   }
 
-  _getCommand(instruction) {
-
-  }
-
-  _verifyCommand(command) {
-
-  }
-
-  _executeCommand(command) {
-
+  find(directory) {
+    this.directoryTree.get(directory);
   }
 
 
-  _findDirectory(path) {
-
-  }
 }
 
 export default DirectoryTree;
