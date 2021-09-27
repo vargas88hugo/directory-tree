@@ -7,7 +7,7 @@ import InstructionHandler from './InstructionHandler';
 const fileReader = new FileReader();
 const filePath = path.resolve(__dirname, process.env.FILE_PATH);
 const instructions = fileReader.readFile(filePath);
+// const instructions = ['LIST']
 
-const instructionHandler = new InstructionHandler();
-const directoryTree = new DirectoryTree();
+const instructionHandler = new InstructionHandler(new DirectoryTree());
 instructionHandler.processInstructions(instructions);
