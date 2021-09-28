@@ -4,6 +4,9 @@
 
 Directory Tree is a program that accepts commands to execute actions like create, delete, move and list directories. It doesn't create folders on the host machine but persist the data in memory.
 
+## Prerequisites
+Basically you need to have Node.js version 10 or higher and npm on your computer
+
 ## File Directory
 ```
 ├── README.md
