@@ -1,7 +1,10 @@
 import fs from 'fs';
-import logger from './utils/logger';
 
 class FileReader {
+  constructor (logger) {
+    this.logger = logger;
+  }
+
   readFile (path) {
     try {
       const rowData = fs.readFileSync(path);
@@ -13,7 +16,7 @@ class FileReader {
   }
 
   _catchError (error) {
-    logger.error(`File reader ${error}`);
+    this.logger.error(`File reader ${error}`);
     process.exit(1);
   }
 }

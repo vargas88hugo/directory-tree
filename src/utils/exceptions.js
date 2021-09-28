@@ -1,13 +1,13 @@
 export class DoesNotExistException extends Error {
   constructor (property) {
     super();
-    this.message = `Error: ${property || 'property'} doesn't exist or is empty`;
+    this.message = `Error: ${property} doesn't exist or is empty`;
   }
 }
 
 export class InvalidTypeException extends TypeError {
   constructor (property, value) {
     super();
-    this.message = `Error: ${property || 'property'} ${value || ''} is invalid`;
+    this.message = `Error: ${property} ${value} is invalid`;
   }
 }

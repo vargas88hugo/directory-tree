@@ -1,13 +1,13 @@
 import { DoesNotExistException, InvalidTypeException } from './utils/exceptions';
 import { COMMANDS_MAP } from './utils/constants';
-import logger from './utils/logger.js';
 import DirectoryTree from './DirectoryTree';
 
 class InstructionHandler {
-  constructor (directoryTree) {
+  constructor (directoryTree, logger) {
     this._validateDirectoryTree(directoryTree);
     this._directoryTree = directoryTree;
     this._executionMap = new Map();
+    this.logger = logger;
   }
 
   processInstructions (instructions) {
@@ -15,17 +15,13 @@ class InstructionHandler {
       try {
         this._processInstruction(instruction);
       } catch (error) {
-        logger.error(error.message);
+        this.logger.error(error.message);
       }
     }
   }
 
   set executionMap (value) {
     this._executionMap = value;
-  }
-
-  get executionMap () {
-    return this._executionMap;
   }
 
   _processInstruction (instruction) {
@@ -41,7 +37,6 @@ class InstructionHandler {
   }
 
   _validateCommand (command) {
-    if (!command || !command.length) throw new DoesNotExistException('command');
     if (!Object.values(COMMANDS_MAP).includes(command.toUpperCase().trim())) throw new InvalidTypeException('command', command);
   }
 
@@ -51,7 +46,10 @@ class InstructionHandler {
   }
 
   _executeCommand (command, path, destiny) {
-    logger.log(`${command} ${path || ''} ${destiny || ''}`);
+    let string = command;
+    if (path) string += ` ${path}`;
+    if (destiny) string += ` ${destiny}`;
+    this.logger.log(string);
     const executionFunction = this._executionMap.get(command);
     const bindFunction = executionFunction.bind(this._directoryTree);
     bindFunction(path, destiny);

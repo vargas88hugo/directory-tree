@@ -1,9 +1,9 @@
-import { DoesNotExistException, InvalidTypeException } from './utils/exceptions';
-import logger from './utils/logger';
+import { DoesNotExistException } from './utils/exceptions';
 
 class DirectoryTree {
-  constructor () {
+  constructor (logger) {
   	this.directoryTree = new Map();
+    this.logger = logger;
   }
 
   create (path, directory) {
@@ -14,10 +14,8 @@ class DirectoryTree {
   }
 
   move (source, destiny) {
-  	let path = destiny.split('/').slice(0, -1).join('/');
-  	path = (path) ? path + '/' + destiny : destiny;
   	const deletedDirectory = this.delete(source);
-  	this.create(path, deletedDirectory);
+  	this.create(destiny, deletedDirectory);
   }
 
   delete (path) {
@@ -32,25 +30,20 @@ class DirectoryTree {
   }
 
   _printDirectory (directoryTree, space) {
-  	if (!directoryTree) return;
   	const entries = Array.from(directoryTree.entries());
   	for (const entry of entries.sort()) {
   		const [entryKey, entryValue] = entry;
-  		logger.log(space + entryKey);
-  		if (entryValue && entryValue instanceof Map) {
-  			this._printDirectory(entryValue, space + ' ');
-  		}
+  		this.logger.log(space + entryKey);
+      this._printDirectory(entryValue, space + ' ');
   	}
   }
 
   _validatePath (path) {
   	if (!path) throw new DoesNotExistException('path');
-  	if (typeof path !== 'string' && !(path instanceof String)) throw new InvalidTypeException('path', path);
   }
 
   _validateSubDirectory (subdirectory) {
   	if (!subdirectory) throw new DoesNotExistException('subdirectory');
-  	if (!(subdirectory instanceof Map)) throw new InvalidTypeException('subdirectory', subdirectory);
   }
 
   _createDirectory (workspace, keyValueDirectory) {

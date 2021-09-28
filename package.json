@@ -8,7 +8,7 @@
     "build": "npx babel src --out-dir build",
     "start": "npx babel-node src/index",
     "fix": "npx eslint . --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -27,11 +27,13 @@
     "@babel/node": "^7.15.4",
     "@babel/plugin-proposal-class-properties": "^7.14.5",
     "@babel/preset-env": "^7.15.6",
+    "babel-jest": "^27.2.3",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.0"
+    "eslint-plugin-promise": "^5.1.0",
+    "jest": "^27.2.3"
   },
   "dependencies": {
     "dotenv": "^10.0.0"
