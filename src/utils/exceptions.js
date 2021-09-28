@@ -1,11 +1,11 @@
-// export class NotCommandException extends Error {  
+// export class NotCommandException extends Error {
 //   constructor() {
 //       super();
 //       this.message = `Command doesn't exist or is empty`;
 //   }
 // }
 
-// export class NotPathException extends Error {  
+// export class NotPathException extends Error {
 //   constructor() {
 //       super();
 //       this.message = `Path doesn't exist or is empty`;
@@ -26,9 +26,9 @@
 //   }
 // }
 export class DoesNotExistException extends Error {
-  constructor(property) {
+  constructor (property) {
     super();
-    this.message = `${property || 'property'} doesn't exist or is empty`
+    this.message = `${property || 'property'} doesn't exist or is empty`;
   }
 }
 
@@ -46,8 +46,8 @@ export class DoesNotExistException extends Error {
 //   }
 // }
 export class InvalidTypeException extends TypeError {
-  constructor(property) {
+  constructor (property) {
     super();
-    this.message = `${property || 'property'} is invalid`
+    this.message = `${property || 'property'} is invalid`;
   }
 }

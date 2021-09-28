@@ -1,8 +1,8 @@
 export default {
-  error(message) {
+  error (message) {
     console.error(message);
   },
-  log(message) {
-    console.log(message)
+  log (message) {
+    console.log(message);
   }
-}
+};

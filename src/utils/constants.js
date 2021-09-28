@@ -3,4 +3,4 @@ export const VALID_COMMANDS = Object.freeze([
   'LIST',
   'MOVE',
   'DELETE'
-])
+]);

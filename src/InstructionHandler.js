@@ -4,12 +4,12 @@ import logger from './utils/logger.js';
 import DirectoryTree from './DirectoryTree';
 
 class InstructionHandler {
-  constructor(directoryTree) {
+  constructor (directoryTree) {
     this.directoryTree = directoryTree;
     this._validateDirectoryTree(this.directoryTree);
   }
 
-  processInstructions(instructions) {
+  processInstructions (instructions) {
     for (const instruction of instructions) {
       try {
         this._processInstruction(instruction);
@@ -19,38 +19,38 @@ class InstructionHandler {
     }
   }
 
-  _processInstruction(instruction) {
+  _processInstruction (instruction) {
     if (!instruction || !instruction.length) throw new DoesNotExistException('instruction');
     const { command, path, destiny } = this._getCommandAndDirectory(instruction);
     this._validateCommand(command);
     this._executeCommand(command, path, destiny);
   }
 
-  _getCommandAndDirectory(instruction) {
+  _getCommandAndDirectory (instruction) {
     const [command, path, destiny] = instruction.split(/\s+/);
     return { command, path, destiny };
   }
 
-  _validateCommand(command) {
+  _validateCommand (command) {
     if (!command || !command.length) throw new DoesNotExistException('command');
     if (!VALID_COMMANDS.includes(command.toUpperCase().trim())) throw new InvalidTypeException('command');
   }
 
-  _validateDirectoryTree(directoryTree) {
+  _validateDirectoryTree (directoryTree) {
     if (!directoryTree) throw new DoesNotExistException('directory tree');
     if (!(directoryTree instanceof DirectoryTree)) throw new InvalidTypeException('directory tree');
   }
 
-  _executeCommand(command, path, destiny) {
+  _executeCommand (command, path, destiny) {
     logger.log(`${command} ${path || ''} ${destiny || ''}`);
     if (command === 'LIST') {
       this.directoryTree.list();
     } else if (command === 'CREATE') {
       this.directoryTree.create(path);
     } else if (command === 'DELETE') {
-      this.directoryTree.delete(path)
+      this.directoryTree.delete(path);
     } else if (command === 'MOVE') {
-      this.directoryTree.move(path, destiny)
+      this.directoryTree.move(path, destiny);
     }
   }
 }
