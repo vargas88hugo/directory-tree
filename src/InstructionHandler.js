@@ -1,12 +1,4 @@
-import {
-  NotInstructionException,
-  NotCommandException,
-  InvalidCommandException,
-  NotDirectoryTreeException,
-  InvalidDirectoryTreeException,
-  DoesNotExistException,
-  InvalidTypeException
-} from './utils/exceptions';
+import { DoesNotExistException, InvalidTypeException } from './utils/exceptions';
 import { VALID_COMMANDS } from './utils/constants';
 import logger from './utils/logger.js';
 import DirectoryTree from './DirectoryTree';
@@ -29,14 +21,14 @@ class InstructionHandler {
 
   _processInstruction(instruction) {
     if (!instruction || !instruction.length) throw new DoesNotExistException('instruction');
-    const { command, directory } = this._getCommandAndDirectory(instruction);
+    const { command, path, destiny } = this._getCommandAndDirectory(instruction);
     this._validateCommand(command);
-    this._executeCommand(command, directory);
+    this._executeCommand(command, path, destiny);
   }
 
   _getCommandAndDirectory(instruction) {
-    const [command, directory] = instruction.split(/\s+/);
-    return { command, directory };
+    const [command, path, destiny] = instruction.split(/\s+/);
+    return { command, path, destiny };
   }
 
   _validateCommand(command) {
@@ -49,11 +41,16 @@ class InstructionHandler {
     if (!(directoryTree instanceof DirectoryTree)) throw new InvalidTypeException('directory tree');
   }
 
-  _executeCommand(command, directory) {
+  _executeCommand(command, path, destiny) {
+    logger.log(`${command} ${path || ''} ${destiny || ''}`);
     if (command === 'LIST') {
       this.directoryTree.list();
     } else if (command === 'CREATE') {
-      this.directoryTree.create(directory);
+      this.directoryTree.create(path);
+    } else if (command === 'DELETE') {
+      this.directoryTree.delete(path)
+    } else if (command === 'MOVE') {
+      this.directoryTree.move(path, destiny)
     }
   }
 }

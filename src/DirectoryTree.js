@@ -1,31 +1,33 @@
 import { DoesNotExistException, InvalidTypeException } from "./utils/exceptions";
+import logger from "./utils/logger";
 
 class DirectoryTree {
   // directoryTree = new Map([['a'], ['b', new Map([['c', new Map([['d'], ['f']])]])], ['g']]);
   directoryTree = new Map();
 
-  create(path) {
-    // this.directoryTree.set(directory, new Map());
+  create(path, directory) {
     this._validatePath(path);
-    const splitPath = path.split('/');
-    if (splitPath.length > 1) {
-      this._createCompoundDirectory(splitPath);
-    } else {
-      const directory = splitPath[0];
-      this.directoryTree.set(directory, new Map());
-    }
+    const { workspace, baseName } = this._splitPath(path)
+    const keyValueDirectory = [baseName, directory || new Map()]
+    this._createDirectory(workspace, keyValueDirectory);
   }
 
-  move(directory, path) {
-
+  move(source, destiny) {
+    let x = destiny.split('/')
+    x = x.slice(0,-1).join('/')
+    x = (x) ? x + '/' + destiny : destiny
+    const deletedDirectory = this.delete(source);
+    this.create(x, deletedDirectory);
   }
 
-  delete(directory) {
-
+  delete(path) {
+    this._validatePath(path);
+    const { workspace, baseName } = this._splitPath(path);
+    const deletedDirectory = this._deleteDirectory(workspace, baseName);
+    return deletedDirectory;
   }
 
   list() {
-    // console.log({list:this.directoryTree})
     this._printDirectory(this.directoryTree, '');
   }
 
@@ -36,7 +38,7 @@ class DirectoryTree {
 
     for (const entry of entries) {
       const [entryKey, entryValue] = entry;
-      console.log(space + entryKey)
+      logger.log(space + entryKey)
       if (entryValue && entryValue instanceof Map) {
         this._printDirectory(entryValue, space + ' ');
       }
@@ -53,11 +55,19 @@ class DirectoryTree {
     if (!(subdirectory instanceof Map)) throw new InvalidTypeException('subdirectory');
   }
 
-  _createCompoundDirectory(path) {
-    const workspace = path.slice(0, -1);
-    const baseName = path[path.length - 1];
+  _createDirectory(workspace, keyValueDirectory) {
+    const [key, value] = keyValueDirectory;
     const workspaceMap = this._getWorkspace(workspace);
-    this._insertDirectoryInWorkspace(workspaceMap, baseName);
+    const oldValues = workspaceMap.get(key);
+    workspaceMap.set(key, (oldValues) ? new Map([...value, ...oldValues]) : value);
+  }
+
+  _deleteDirectory(workspace, baseName) {
+    const workspaceMap = this._getWorkspace(workspace);
+    const directoryCopy = (workspace.length > 0) ? new Map(workspaceMap) : new Map([[baseName, workspaceMap.get(baseName)]]);
+    // const directoryCopy = new Map(workspaceMap);
+    workspaceMap.delete(baseName);
+    return directoryCopy;
   }
 
   _getWorkspace(workspace) {
@@ -69,8 +79,11 @@ class DirectoryTree {
     return currentSubdirectory;
   }
 
-  _insertDirectoryInWorkspace(workspaceMap, baseName) {
-    workspaceMap.set(baseName, new Map());
+  _splitPath(path) {
+    const splitPath = path.split('/');
+    const workspace = splitPath.slice(0, -1);
+    const baseName = splitPath[splitPath.length - 1];
+    return { workspace, baseName };
   }
 }
 
