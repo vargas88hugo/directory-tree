@@ -33,19 +33,21 @@ Basically you need to have Node.js version 10 or higher and npm on your computer
 ## Installation
 Inside the root folder of the project execute the next command.
 ```bash
-$ npm i
+git clone https://github.com/vargas88hugo/directory-tree.git
+cd directory-tree
+npm i
 ```
 
 ## Execution
 Inside the root folder of the project execute the next command. It's important to use the src/input file that has the commads to execute.
 ```bash
-$ npm run start
+npm run start
 ```
 
 ## Test
 Inside the root folder of the project execute the next command.
 ```bash
-$ npm run test
+npm run test
 ```
 
 ## Coverage
