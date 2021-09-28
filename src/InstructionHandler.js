@@ -3,7 +3,9 @@ import {
   NotCommandException,
   InvalidCommandException,
   NotDirectoryTreeException,
-  InvalidDirectoryTreeException
+  InvalidDirectoryTreeException,
+  DoesNotExistException,
+  InvalidTypeException
 } from './utils/exceptions';
 import { VALID_COMMANDS } from './utils/constants';
 import logger from './utils/logger.js';
@@ -26,7 +28,7 @@ class InstructionHandler {
   }
 
   _processInstruction(instruction) {
-    if (!instruction || !instruction.length) throw new NotInstructionException();
+    if (!instruction || !instruction.length) throw new DoesNotExistException('instruction');
     const { command, directory } = this._getCommandAndDirectory(instruction);
     this._validateCommand(command);
     this._executeCommand(command, directory);
@@ -38,13 +40,13 @@ class InstructionHandler {
   }
 
   _validateCommand(command) {
-    if (!command || !command.length) throw new NotCommandException();
-    if (!VALID_COMMANDS.includes(command.toUpperCase().trim())) throw new InvalidCommandException(command);
+    if (!command || !command.length) throw new DoesNotExistException('command');
+    if (!VALID_COMMANDS.includes(command.toUpperCase().trim())) throw new InvalidTypeException('command');
   }
 
   _validateDirectoryTree(directoryTree) {
-    if (!directoryTree) throw new NotDirectoryTreeException();
-    if (!(directoryTree instanceof DirectoryTree)) throw new InvalidDirectoryTreeException();
+    if (!directoryTree) throw new DoesNotExistException('directory tree');
+    if (!(directoryTree instanceof DirectoryTree)) throw new InvalidTypeException('directory tree');
   }
 
   _executeCommand(command, directory) {
