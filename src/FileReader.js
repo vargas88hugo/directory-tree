@@ -1,10 +1,20 @@
 import fs from 'fs';
+import logger from './utils/logger';
 
 class FileReader {
   readFile (path) {
-    const data = fs.readFileSync(path).toString().split('\n').filter((line) => line !== '');
+    try {
+      const rowData = fs.readFileSync(path);
+      const parsedData = rowData.toString().split('\n').filter((line) => line !== '');
+      return parsedData;
+    } catch (error) {
+      this._catchError(error);
+    }
+  }
 
-    return data;
+  _catchError (error) {
+    logger.error(`File reader ${error}`);
+    process.exit(1);
   }
 }
 

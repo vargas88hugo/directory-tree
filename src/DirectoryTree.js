@@ -2,8 +2,6 @@ import { DoesNotExistException, InvalidTypeException } from './utils/exceptions'
 import logger from './utils/logger';
 
 class DirectoryTree {
-  directoryTree
-
   constructor () {
   	this.directoryTree = new Map();
   }
@@ -16,8 +14,7 @@ class DirectoryTree {
   }
 
   move (source, destiny) {
-  	let path = destiny.split('/');
-  	path = path.slice(0, -1).join('/');
+  	let path = destiny.split('/').slice(0, -1).join('/');
   	path = (path) ? path + '/' + destiny : destiny;
   	const deletedDirectory = this.delete(source);
   	this.create(path, deletedDirectory);
@@ -36,10 +33,8 @@ class DirectoryTree {
 
   _printDirectory (directoryTree, space) {
   	if (!directoryTree) return;
-
   	const entries = Array.from(directoryTree.entries());
-
-  	for (const entry of entries) {
+  	for (const entry of entries.sort()) {
   		const [entryKey, entryValue] = entry;
   		logger.log(space + entryKey);
   		if (entryValue && entryValue instanceof Map) {

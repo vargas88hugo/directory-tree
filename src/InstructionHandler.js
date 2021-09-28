@@ -5,8 +5,9 @@ import DirectoryTree from './DirectoryTree';
 
 class InstructionHandler {
   constructor (directoryTree) {
-    this.directoryTree = directoryTree;
-    this._validateDirectoryTree(this.directoryTree);
+    this._validateDirectoryTree(directoryTree);
+    this._directoryTree = directoryTree;
+    this._executionMap = new Map();
   }
 
   processInstructions (instructions) {
@@ -14,9 +15,17 @@ class InstructionHandler {
       try {
         this._processInstruction(instruction);
       } catch (error) {
-        logger.error(error);
+        logger.error(error.message);
       }
     }
+  }
+
+  set executionMap (value) {
+    this._executionMap = value;
+  }
+
+  get executionMap () {
+    return this._executionMap;
   }
 
   _processInstruction (instruction) {
@@ -43,15 +52,9 @@ class InstructionHandler {
 
   _executeCommand (command, path, destiny) {
     logger.log(`${command} ${path || ''} ${destiny || ''}`);
-    if (command === 'LIST') {
-      this.directoryTree.list();
-    } else if (command === 'CREATE') {
-      this.directoryTree.create(path);
-    } else if (command === 'DELETE') {
-      this.directoryTree.delete(path);
-    } else if (command === 'MOVE') {
-      this.directoryTree.move(path, destiny);
-    }
+    const executionFunction = this._executionMap.get(command);
+    const bindFunction = executionFunction.bind(this._directoryTree);
+    bindFunction(path, destiny);
   }
 }
 
