@@ -2,7 +2,7 @@
 
 ## Description
 
-Directory Tree is a program that accepts commands to execute actions like create, delete, move and list directories. It doesn't create folders on the host machine but persist the data on memory.
+Directory Tree is a program that accepts commands to execute actions like create, delete, move and list directories. It doesn't create folders on the host machine but persist the data in memory.
 
 ## File Directory
 ```
