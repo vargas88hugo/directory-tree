@@ -45,12 +45,12 @@ class DirectoryTree {
 
   _validatePath (path) {
   	if (!path) throw new DoesNotExistException('path');
-  	if (typeof path !== 'string' && !(path instanceof String)) throw new InvalidTypeException('path');
+  	if (typeof path !== 'string' && !(path instanceof String)) throw new InvalidTypeException('path', path);
   }
 
   _validateSubDirectory (subdirectory) {
   	if (!subdirectory) throw new DoesNotExistException('subdirectory');
-  	if (!(subdirectory instanceof Map)) throw new InvalidTypeException('subdirectory');
+  	if (!(subdirectory instanceof Map)) throw new InvalidTypeException('subdirectory', subdirectory);
   }
 
   _createDirectory (workspace, keyValueDirectory) {

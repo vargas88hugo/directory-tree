@@ -7,7 +7,7 @@ CREATE grains
 CREATE fruits/apples 
 
 CREATE fruits/apples/fuji 
-
+ERRO
 LIST 
 
 CREATE grains/squash 

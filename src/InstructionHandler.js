@@ -1,5 +1,5 @@
 import { DoesNotExistException, InvalidTypeException } from './utils/exceptions';
-import { VALID_COMMANDS } from './utils/constants';
+import { COMMANDS_MAP } from './utils/constants';
 import logger from './utils/logger.js';
 import DirectoryTree from './DirectoryTree';
 
@@ -42,12 +42,12 @@ class InstructionHandler {
 
   _validateCommand (command) {
     if (!command || !command.length) throw new DoesNotExistException('command');
-    if (!VALID_COMMANDS.includes(command.toUpperCase().trim())) throw new InvalidTypeException('command');
+    if (!Object.values(COMMANDS_MAP).includes(command.toUpperCase().trim())) throw new InvalidTypeException('command', command);
   }
 
   _validateDirectoryTree (directoryTree) {
     if (!directoryTree) throw new DoesNotExistException('directory tree');
-    if (!(directoryTree instanceof DirectoryTree)) throw new InvalidTypeException('directory tree');
+    if (!(directoryTree instanceof DirectoryTree)) throw new InvalidTypeException('directory tree', directoryTree);
   }
 
   _executeCommand (command, path, destiny) {

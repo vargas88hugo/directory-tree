@@ -1,6 +1,6 @@
-export const VALID_COMMANDS = Object.freeze([
-  'CREATE',
-  'LIST',
-  'MOVE',
-  'DELETE'
-]);
+export const COMMANDS_MAP = Object.freeze({
+  create: 'CREATE',
+  list: 'LIST',
+  move: 'MOVE',
+  delete: 'DELETE'
+});
