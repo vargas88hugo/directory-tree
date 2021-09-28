@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf build && mkdir build",
-    "build": "npx babel src --out-dir build",
+    "build": "npm run clean && npx babel src --out-dir build",
     "start": "npx babel-node src/index",
+    "start:prod": "npm run build && cp src/input build/ && npx babel-node build/index",
     "fix": "npx eslint . --fix",
     "test": "jest"
   },
