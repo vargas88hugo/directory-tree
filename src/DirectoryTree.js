@@ -1,11 +1,25 @@
 export default class DirectoryTree {
-  constructor(name, composites = []) {
-    this.name = name;
-    this.composites = composites.sort((x, y) => x.name - y.name);
+  constructor(name, directories = []) {
+    this.name = name
+    this.directories = directories.sort((x, y) => x.name - y.name);
+    this.root = false;
   }
 
-  print(tab = '') {
-    console.log(`${tab}${this.name}`);
-    this.composites.forEach(item => item.print(tab + ' '));
+  setRoot() {
+    this.root = true;
+    return this;
+  }
+
+  setDirectories(directories = []) {
+    this.directories = directories;
+  }
+
+  print(tab = '') {   
+    if (this.root) {
+      this.directories.forEach(directory => directory.print())
+    } else {
+      console.log(`${tab}${this.name}`);
+      this.directories.forEach(directory => directory.print(tab + ' '));
+    }
   }
 }
